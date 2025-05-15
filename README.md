@@ -52,7 +52,7 @@ https://ai-humanizer.streamlit.app
 
 Here’s a quick demo of AI Humanizer in action.
 
-[ai-humanizer.webm](https://github.com/user-attachments/assets/4d65734a-8a24-4491-9d7c-6920500ddb31)
+https://github.com/user-attachments/assets/0a661f7a-4238-4941-9f9a-fe879544b468
 
 Try it live: https://ai-humanizer.streamlit.app
 
