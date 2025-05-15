@@ -1,0 +1,9 @@
+services:
+  ai-humanizer:
+    build: .
+    command: streamlit run src/main.py
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+    ports:
+      - "8501:8501"
+    restart: unless-stopped
