@@ -24,7 +24,7 @@ class HumanizerHandlers:
         """
         try:
             if not self.api_key:
-                st.warning("Please enter your Google Gemini API key.")
+                st.toast("Please enter your Google Gemini API key.", icon="⚠️")
                 self.logger.write_log("error", "Paste button clicked without API key")
                 return
 
@@ -33,7 +33,7 @@ class HumanizerHandlers:
             self.logger.write_log("info", "Pasted text from clipboard")
         except Exception as e:
             self.logger.write_log("error", f"Failed to paste from clipboard: {e}")
-            st.warning("Unable to access clipboard. Please paste manually.")
+            st.toast("Unable to access clipboard. Please paste manually.", icon="❌")
 
 
     def clear_text(self) -> None:
@@ -43,7 +43,7 @@ class HumanizerHandlers:
         """
         try:
             if not self.api_key :
-                st.warning("Please enter your Google Gemini API key.")
+                st.toast("Please enter your Google Gemini API key.", icon="⚠️")
                 self.logger.write_log("error", "Clear button clicked without API key")
                 return
 
@@ -52,7 +52,7 @@ class HumanizerHandlers:
             self.logger.write_log("info", "Cleared input and output text areas")
         except Exception as e:
             self.logger.write_log("error", f"Failed to clear text: {e}")
-            st.warning("Unable to clear text.")
+            st.toast("Unable to clear text.", icon="❌")
 
 
     def copy_to_clipboard(self) -> None:
@@ -62,16 +62,16 @@ class HumanizerHandlers:
         """
         try:
             if not self.api_key:
-                st.warning("Please enter your Google Gemini API key.")
+                st.toast("Please enter your Google Gemini API key.", icon="⚠️")
                 self.logger.write_log("error", "Copy to clipboard clicked without API key")
                 return
 
             pyperclip.copy(st.session_state.output)
-            st.success("Copied to clipboard!")
+            st.toast("Copied to clipboard!", icon="✅")
             self.logger.write_log("info", "Copied output to clipboard")
         except Exception as e:
             self.logger.write_log("error", f"Failed to copy to clipboard: {e}")
-            st.warning("Unable to copy to clipboard. Please copy manually.")
+            st.toast("Unable to copy to clipboard. Please copy manually.", icon="❌")
 
 
     def on_humanize_click(self) -> None:
@@ -80,7 +80,7 @@ class HumanizerHandlers:
         """
         try:
             if not self.api_key:
-                st.warning("Please enter your Google Gemini API key.")
+                st.toast("Please enter your Google Gemini API key.", icon="⚠️")
                 self.logger.write_log("error", "Humanize button clicked without API key")
                 return
 
@@ -88,8 +88,8 @@ class HumanizerHandlers:
                 st.session_state.humanize_clicked = True
                 self.logger.write_log("info", "Humanize button clicked")
             else:
-                st.warning("Please enter some text to humanize.")
+                st.toast("Please enter some text to humanize.", icon="❌")
                 self.logger.write_log("error", "Humanize button clicked with empty input")
         except Exception as e:
             self.logger.write_log("error", f"Error in humanize button click: {e}")
-            st.warning("An error occurred while processing your request.")
+            st.toast("An error occurred while processing your request.", icon="❌")

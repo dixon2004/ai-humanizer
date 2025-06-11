@@ -3,6 +3,7 @@ from utils.config import GEMINI_API_KEY
 from api.gemini import GoogleGemini
 from utils.logger import SyncLogger
 import streamlit as st
+import time
 
 
 logger = SyncLogger("AIHumanizer")
@@ -74,7 +75,7 @@ st.markdown("""
 
 
 # --- Session State ---
-for key in ["input", "output", "processing", "humanize_clicked"]:
+for key in ["input", "output", "processing", "humanize_clicked", "api_key_invalid"]:
     if key not in st.session_state:
         st.session_state[key] = "" if key in ["input", "output"] else False
 
@@ -88,8 +89,16 @@ else:
         type="password",
         key="manual_api_key"
     )
-    if gemini_api_key:
-        st.success("API key set successfully.")
+
+    if st.session_state.api_key_invalid:
+        st.error("Invalid API key. Please verify your key and try again.")
+        st.session_state.api_key_invalid = False
+        gemini_api_key = None
+        st.session_state.input = ""
+        st.session_state.output = ""
+    else:
+        if gemini_api_key:
+            st.success("API key set successfully!")
 
     st.divider()
 
@@ -140,7 +149,15 @@ if st.session_state.humanize_clicked and not st.session_state.processing:
                 st.session_state.output = result
                 logger.write_log("info", f"Humanized text: {len(st.session_state.output)} characters")
             except Exception as e:
-                st.error(f"Error: {e}")
+                error_message = str(e)
+                if "API key not valid" in error_message:
+                    st.session_state.api_key_invalid = True
+                    st.toast("Invalid API key. Please verify your key and try again.", icon="❌")
+                    logger.write_log("error", "Invalid API key used for humanization")
+                else:
+                    st.toast("Error humanizing text. Please try again.", icon="❌")
+                    logger.write_log("error", f"Humanization error: {e}")
+                time.sleep(3)
             finally:
                 st.session_state.processing = False
         st.rerun()
